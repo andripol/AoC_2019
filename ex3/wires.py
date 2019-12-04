@@ -32,6 +32,11 @@ def get_input_and_map():
     open_wire_up(array[0], wire1_map)
     open_wire_up(array[1], wire2_map)
 
+def check_for_point_in_range(point, vertice1, vertice2):
+    if (vertice1 >= point and vertice2 <= point) or (vertice1 <= point and vertice2 >= point):
+        return True
+    return False
+
 def find_nearest_connection():
     min_connection_distance = float('Inf')
     for index2 in range(0, len(wire2_map) - 1, 1):
@@ -44,18 +49,14 @@ def find_nearest_connection():
             point12 = wire1_map[index1+1]
             # same horizontal value -> vertical line for wire2
             if (point21[0] == point22[0]):
-                if ((point11[0] >= point21[0] and point12[0] <= point21[0])
-                or (point11[0] <= point21[0] and point12[0] >= point21[0])):
-                        if ((point21[1] >= point11[1] and point22[1] <= point11[1])
-                        or (point21[1] <= point11[1] and point22[1] >= point11[1])):
-                            manh_dist = point21[0] + point11[1] 
+                if check_for_point_in_range(point21[0], point11[0], point12[0]):
+                    if check_for_point_in_range(point11[1], point21[1], point22[1]):
+                        manh_dist = point21[0] + point11[1] 
             # horizontal line for wire2
             else:
-                if (((point11[1] >= point21[1]) and (point12[1] <= point21[1]))
-                 or ((point11[1] <= point21[1]) and (point12[1] >= point21[1]))):
-                        if (((point21[0] >= point11[0]) and (point22[0] <= point11[0]))
-                        or ((point21[0] <= point11[0]) and (point22[0] >= point11[0]))):
-                            manh_dist = point21[1] + point11[0] 
+                if check_for_point_in_range(point21[1], point11[1], point12[1]):
+                    if check_for_point_in_range(point11[0], point21[0], point22[0]):
+                        manh_dist = point21[1] + point11[0] 
             
             if (manh_dist < min_connection_distance) and (manh_dist > 0):
                 min_connection_distance = manh_dist 
