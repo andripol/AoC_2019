@@ -1,28 +1,23 @@
 global turing_array;
+turing_array = []
 
-def read_input_into_array():
-    global turing_array
-    turing_array = [] 
-    with open("input2") as f:
+def read_input_into_array(input_file):
+    with open(input_file) as f:
         for line in f:
             for x in line.split(','):
                 turing_array.append(int(x)) 
 
 def restore_gravity_assist_program(value1, value2):
-    global turing_array
     turing_array[1] = value1
     turing_array[2] = value2 
 
 def add_and_save(number1, number2, save_pos):
-    global turing_array
     turing_array[save_pos] = number1 + number2
 
 def mul_and_save(number1, number2, save_pos):
-    global turing_array
     turing_array[save_pos] = number1 * number2
 
 def execute_program():
-    global turing_array
     for x in range(0, len(turing_array), 4):
         command = int(turing_array[x])
         if (command == 1):
@@ -37,15 +32,9 @@ def execute_program():
 
 def initialize_and_execute(value1, value2):
     global turing_array
-    read_input_into_array()
+    read_input_into_array('input2')
     restore_gravity_assist_program(value1, value2)
     execute_program()
-    #print(turing_array[0])
-    return(turing_array[0])
+    print(turing_array[0])
 
-
-def main():
-    initialize_and_execute(12, 2)
-
-if __name__ == "__main__":
-    main()
+initialize_and_execute(12, 2)
