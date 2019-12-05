@@ -1,5 +1,5 @@
-global program_array;
-program_array = []
+global program;
+program = []
 
 OP_ADD = 1
 ADD_STEP = 4
@@ -20,18 +20,18 @@ INPUT_VALUE = 5
 def input_to_array(fname):
     with open(fname) as f:
         for line in f:
-            for x in line.split(','): program_array.append(int(x)) 
+            for x in line.split(','): program.append(int(x)) 
 
-def add_and_save(number1, number2, idx, ip):
-    program_array[idx] = number1 + number2
+def add(number1, number2, idx, ip):
+    program[idx] = number1 + number2
     return ip+4
 
-def mul_and_save(number1, number2, idx, ip):
-    program_array[idx] = number1 * number2
+def mul(number1, number2, idx, ip):
+    program[idx] = number1 * number2
     return ip+4
 
-def save_value(number, idx, ip):
-    program_array[idx] = number
+def save_value(value, idx, ip):
+    program[idx] = value
     return ip+2
 
 def output_value(number, ip):
@@ -47,15 +47,13 @@ def jump_if_false(flag, value, ip):
     return ip+3
 
 def less_than(param1, param2, idx, ip):
-    if (param1 < param2): program_array[idx] = 1
-    else: program_array[idx] = 0
+    if (param1 < param2): program[idx] = 1
+    else: program[idx] = 0
     return ip+4
 
 def equals(param1, param2, idx, ip):
-    if (param1 == param2):
-        program_array[idx] = 1
-    else:
-        program_array[idx] = 0
+    if (param1 == param2): program[idx] = 1
+    else: program[idx] = 0
     return ip+4
 
 def command_and_modes(cmd):
@@ -65,31 +63,31 @@ def command_and_modes(cmd):
         abcde.append(i)
     return [list(map(int,abcde[0:3])), int(abcde[-2] + abcde[-1])]
 
-def mode_value(value, mode):
-    if mode == POS_MODE: return (program_array[value])
+def mode_val(value, mode):
+    if mode == POS_MODE: return (program[value])
     return value
 
 def execute_program():
     ip = 0
-    while ip < len(program_array):
-        [abc, cmd] = command_and_modes(str(program_array[ip])) 
+    while ip < len(program):
+        [abc, cmd] = command_and_modes(str(program[ip])) 
         if (cmd == OP_ADD):
-            ip = add_and_save(mode_value(program_array[ip+1], abc[-1]), mode_value(program_array[ip+2], abc[-2]), program_array[ip+3], ip)
+            ip = add(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), program[ip+3], ip)
         elif (cmd == OP_MUL):
-            ip = mul_and_save(mode_value(program_array[ip+1], abc[-1]), mode_value(program_array[ip+2], abc[-2]), program_array[ip+3], ip)
+            ip = mul(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), program[ip+3], ip)
         elif(cmd == OP_IN):
             # always position mode
-            ip = save_value(INPUT_VALUE, program_array[ip+1], ip)
+            ip = save_value(INPUT_VALUE, program[ip+1], ip)
         elif (cmd == OP_OUT):
-            ip = output_value(mode_value(program_array[ip+1], abc[-1]), ip)
+            ip = output_value(mode_val(program[ip+1], abc[-1]), ip)
         elif (cmd == OP_JT):
-            ip = jump_if_true(mode_value(program_array[ip+1], abc[-1]), mode_value(program_array[ip+2], abc[-2]), ip)
+            ip = jump_if_true(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), ip)
         elif (cmd == OP_JF):
-            ip = jump_if_false(mode_value(program_array[ip+1], abc[-1]), mode_value(program_array[ip+2], abc[-2]), ip)
+            ip = jump_if_false(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), ip)
         elif (cmd == OP_LT):
-            ip = less_than(mode_value(program_array[ip+1], abc[-1]), mode_value(program_array[ip+2], abc[-2]), program_array[ip+3], ip)
+            ip = less_than(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), program[ip+3], ip)
         elif (cmd == OP_EQ):
-            ip = equals(mode_value(program_array[ip+1], abc[-1]), mode_value(program_array[ip+2], abc[-2]), program_array[ip+3], ip)
+            ip = equals(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), program[ip+3], ip)
         elif (cmd == OP_HALT):
             break
         else:
