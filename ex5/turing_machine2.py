@@ -94,8 +94,5 @@ def execute_program():
             print("Something went wrong, no such cmd eipists. Command =  ", cmd)
     return
 
-def initialize_and_execute(value1, value2):
-    input_to_array('input5')
-    execute_program()
-
-initialize_and_execute(12, 2)
+input_to_array('input5')
+execute_program()
