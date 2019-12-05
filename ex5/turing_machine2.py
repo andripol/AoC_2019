@@ -2,7 +2,6 @@ global program;
 program = []
 
 OP_ADD = 1
-ADD_STEP = 4
 OP_MUL = 2
 OP_IN = 3
 OP_OUT = 4
@@ -14,7 +13,7 @@ OP_HALT = 99
 
 POS_MODE = 0
 I_MODE = 1
-
+# problem 2
 INPUT_VALUE = 5
 
 def input_to_array(fname):
