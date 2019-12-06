@@ -11,10 +11,8 @@ PlanetOrbits(obj1, obj2) :-
 
 // part 2
 .decl OrbitTransfers(obj1: symbol, obj2: symbol, counter: number)
-.output OrbitTransfers
-
 .decl MinMeAndSanta(minimum: number)
-.output MinMeAndSanta
+.output OrbitTransfers,  MinMeAndSanta
 
 OrbitTransfers(obj1, obj2, 1) :- PlanetOrbit(obj1, obj2).
 
