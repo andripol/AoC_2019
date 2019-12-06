@@ -1,5 +1,5 @@
 # d: dictionary of immediate neighbor orbits
-global d 
+global d, counter 
 d = {}
 
 def input2dict(filename):
@@ -10,13 +10,13 @@ def input2dict(filename):
             else: d[k] = [v]
             if v not in d: d[v] = []
 
-def counter(k):
-    return sum([len(d[d[k][i]]) + counter(d[k][i]) for i in range(len(d[k]))])
+def count_indirect_neighbors(k):
+    return sum([len(d[d[k][i]]) + count_indirect_neighbors(d[k][i]) for i in range(len(d[k]))])
 
-def insert_indirect_d():
+def insert_indirect_neighbors():
     counter = {}
     for k in d:
-        counter[k] = len(d[k]) + counter(k)
+        counter[k] = len(d[k]) + count_indirect_neighbors(k)
     print(sum(counter[i] for i in counter))
 
 input2dict('input6')
