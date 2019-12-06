@@ -1,5 +1,5 @@
 # d: dictionary of immediate neighbor orbits
-global d, counter 
+global d 
 d = {}
 
 def input2dict(filename):
