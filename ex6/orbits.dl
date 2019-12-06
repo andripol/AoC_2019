@@ -1,10 +1,10 @@
 #include "PlanetOrbit.dl"
+
+// part 1
 .decl PlanetOrbits(obj1: symbol, obj2: symbol)
 .output PlanetOrbits
 
-PlanetOrbits(obj1, obj2) :-
-    PlanetOrbit(obj1, obj2).
-
+PlanetOrbits(obj1, obj2) :- PlanetOrbit(obj1, obj2).
 PlanetOrbits(obj1, obj2) :-
     PlanetOrbits(obj1, x),
     PlanetOrbit(x, obj2). 
@@ -13,28 +13,16 @@ PlanetOrbits(obj1, obj2) :-
 .decl OrbitTransfers(obj1: symbol, obj2: symbol, counter: number)
 .output OrbitTransfers
 
-.decl MinimumOrbitTransfers(obj1: symbol, obj2: symbol, minimum: number)
-.output MinimumOrbitTransfers
+.decl MinMeAndSanta(minimum: number)
+.output MinMeAndSanta
 
-.decl MinimumMeAndSanta(minimum: number)
-.output MinimumMeAndSanta
+OrbitTransfers(obj1, obj2, 1) :- PlanetOrbit(obj1, obj2).
 
-OrbitTransfers(obj1, obj2, 1) :-
-    PlanetOrbit(obj1, obj2).
+OrbitTransfers(obj1, obj2, counter) :- OrbitTransfers(obj2, obj1, counter).
 
 OrbitTransfers(obj1, obj2, counter) :-
-    OrbitTransfers(obj2, obj1, counter).
-
-OrbitTransfers(obj1, obj2, counter) :-
+    PlanetOrbit(x, obj2),
     OrbitTransfers(obj1, x, temp_count),
-    counter = temp_count + 1,
-    PlanetOrbit(x, obj2).
+    counter = temp_count + 1.
 
-MinimumOrbitTransfers(obj1, obj2, minimum) :-
-    OrbitTransfers(obj1, obj2, minimum),
-    OrbitTransfers(obj1, obj2, count2),
-    minimum < count2.
-
-MinimumMeAndSanta(minimum) :-
-    MinimumOrbitTransfers("YOU", "SAN", counter),
-    minimum = counter - 2.
+MinMeAndSanta(minimum) :- minimum = min counter:{OrbitTransfers("YOU", "SAN", counter)} - 2.
