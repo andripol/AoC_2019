@@ -1,0 +1,10 @@
+#include "PlanetOrbit.dl"
+.decl PlanetOrbits(obj1: symbol, obj2: symbol)
+.output PlanetOrbits
+
+PlanetOrbits(obj1, obj2) :-
+    PlanetOrbit(obj1, obj2).
+
+PlanetOrbits(obj1, obj2) :-
+    PlanetOrbits(obj1, x),
+    PlanetOrbit(x, obj2). 
