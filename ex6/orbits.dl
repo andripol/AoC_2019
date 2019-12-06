@@ -1,26 +1,32 @@
-#include "PlanetOrbit.dl"
+// input file
+#include "NeighborPlanets.dl"
 
 // part 1
-.decl PlanetOrbits(obj1: symbol, obj2: symbol)
-.output PlanetOrbits
+.decl PossiblePlanetTransfer(obj1: symbol, obj2: symbol)
+.decl PossiblePlanetTransferCount(c: number)
+// final output file
+.output PossiblePlanetTransferCount
 
-PlanetOrbits(obj1, obj2) :- PlanetOrbit(obj1, obj2).
-PlanetOrbits(obj1, obj2) :-
-    PlanetOrbits(obj1, x),
-    PlanetOrbit(x, obj2). 
+PossiblePlanetTransfer(obj1, obj2) :- NeighborPlanets(obj1, obj2).
+PossiblePlanetTransfer(obj1, obj2) :-
+    PossiblePlanetTransfer(obj1, x),
+    NeighborPlanets(x, obj2). 
+
+PossiblePlanetTransferCount(c) :- c = count:{PossiblePlanetTransfer(_,_)}.
 
 // part 2
-.decl OrbitTransfers(obj1: symbol, obj2: symbol, counter: number)
+.decl PlanetPath(obj1: symbol, obj2: symbol, length: number)
 .decl MinMeAndSanta(minimum: number)
-.output OrbitTransfers,  MinMeAndSanta
+// final output file
+.output MinMeAndSanta
 
-OrbitTransfers(obj1, obj2, 1) :- PlanetOrbit(obj1, obj2).
+PlanetPath(obj1, obj2, 1) :- NeighborPlanets(obj1, obj2).
 
-OrbitTransfers(obj1, obj2, counter) :- OrbitTransfers(obj2, obj1, counter).
+PlanetPath(obj1, obj2, length) :- PlanetPath(obj2, obj1, length).
 
-OrbitTransfers(obj1, obj2, counter) :-
-    PlanetOrbit(x, obj2),
-    OrbitTransfers(obj1, x, temp_count),
-    counter = temp_count + 1.
+PlanetPath(obj1, obj2, length) :-
+    NeighborPlanets(x, obj2),
+    PlanetPath(obj1, x, temp_count),
+    length = temp_count + 1.
 
-MinMeAndSanta(minimum) :- minimum = min counter:{OrbitTransfers("YOU", "SAN", counter)} - 2.
+MinMeAndSanta(minimum) :- minimum = min length:{PlanetPath("YOU", "SAN", length)} - 2.
