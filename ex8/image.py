@@ -4,7 +4,6 @@ WIDTH = 25
 HEIGHT = 6
 
 def input(fname):
-    global layers
     with open(fname) as f:
         line = f.readlines()[0].strip('\n')
         for l in range(int(len(line)/(WIDTH*HEIGHT))):
