@@ -14,7 +14,7 @@ OP_HALT = 99
 POS_MODE = 0
 I_MODE = 1
 # dummy initialization
-global INPUT_VALUE 
+global INPUT_VALUE
 
 def add(number1, number2, idx, ip):
     program[idx] = number1 + number2
@@ -64,11 +64,11 @@ def mode_val(value, mode):
 def execute_program(inputs, prog_mem, prog_ip):
     global INPUT_VALUE, program
     program = prog_mem
-    ip = prog_ip 
+    ip = prog_ip
     INPUT_VALUE = inputs.pop()
     if (INPUT_VALUE < 0): INPUT_VALUE = inputs.pop()
     while ip < len(program):
-        [abc, cmd] = command_and_modes(str(program[ip])) 
+        [abc, cmd] = command_and_modes(str(program[ip]))
         if (cmd == OP_ADD):
             ip = add(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), program[ip+3], ip)
         elif (cmd == OP_MUL):

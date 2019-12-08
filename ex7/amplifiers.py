@@ -3,7 +3,7 @@ import itertools
 
 global output
 global output_list
-output_list = [] 
+output_list = []
 
 def solve():
     global output, output_list
@@ -14,6 +14,5 @@ def solve():
             output = run(j, output)
             output_list.append(output)
     print("final result = ", max(output_list))
-
         
 solve()
