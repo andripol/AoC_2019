@@ -15,8 +15,10 @@ OP_HALT = 99
 POS_MODE = 0
 I_MODE = 1
 REL_MODE = 2
-# problem 9
-INPUT_VALUE = 1
+# problem 9, part 1
+#INPUT_VALUE = 1
+# problem 9, part 2
+INPUT_VALUE = 2
 global RELATIVE_BASE 
 RELATIVE_BASE = 0
 
@@ -28,7 +30,6 @@ def input_to_array(fname):
 
 def adjust_mem_length(idx):
     last_progr_idx = len(program) - 1
-    print("current length: ", last_progr_idx, ", idx: ", idx )
     if idx > last_progr_idx:
         for i in range(last_progr_idx, idx):
             program.append(0)
@@ -53,9 +54,7 @@ def output_value(number, ip):
     return ip+2
 
 def jump_if_true(flag, value, ip):
-    print("value: ", value)
     if (flag != 0): 
-        print("value: ", value)
         return value
     return ip+3
 
@@ -91,9 +90,13 @@ def mode_val(value, mode):
     if mode == POS_MODE: 
         adjust_mem_length(value)
         return program[value]
-    elif mode == REL_MODE: 
-        adjust_mem_length(value + RELATIVE_BASE)
+    if mode == REL_MODE: 
         return program[value + RELATIVE_BASE]
+    return value
+
+def mode_val_p(value, mode):
+    if mode == REL_MODE: 
+        return value + RELATIVE_BASE
     return value
 
 def execute_program():
@@ -101,12 +104,12 @@ def execute_program():
     while ip < len(program):
         [abc, cmd] = command_and_modes(str(program[ip])) 
         if (cmd == OP_ADD):
-            ip = add(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), program[ip+3], ip)
+            ip = add(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), mode_val_p(program[ip+3], abc[-3]), ip)
         elif (cmd == OP_MUL):
-            ip = mul(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), program[ip+3], ip)
+            ip = mul(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), mode_val_p(program[ip+3], abc[-3]), ip)
         elif(cmd == OP_IN):
             # always position mode
-            ip = save_value(INPUT_VALUE, mode_val(program[ip+1], abc[-1]), ip)
+            ip = save_value(INPUT_VALUE, mode_val_p(program[ip+1], abc[-1]), ip)
         elif (cmd == OP_OUT):
             ip = output_value(mode_val(program[ip+1], abc[-1]), ip)
         elif (cmd == OP_JT):
@@ -114,15 +117,16 @@ def execute_program():
         elif (cmd == OP_JF):
             ip = jump_if_false(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), ip)
         elif (cmd == OP_LT):
-            ip = less_than(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), mode_val(program[ip+3], abc[-3]), ip)
+            ip = less_than(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), mode_val_p(program[ip+3], abc[-3]), ip)
         elif (cmd == OP_EQ):
-            ip = equals(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), mode_val(program[ip+3], abc[-3]), ip)
+            ip = equals(mode_val(program[ip+1], abc[-1]), mode_val(program[ip+2], abc[-2]), mode_val_p(program[ip+3], abc[-3]), ip)
         elif (cmd == OP_REL):
             ip = adjust_rel_base(mode_val(program[ip+1], abc[-1]), ip)
         elif (cmd == OP_HALT):
             break
         else:
-            print("Something went wrong, no such cmd eipists. Command =  ", cmd)
+            print("Something went wrong, no such cmd exists. Command =  ", cmd)
+            exit()
     return
 
 input_to_array('input9')
