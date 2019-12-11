@@ -189,5 +189,23 @@ def solve():
         in_value = panel_map[cur_pos]
     print("Painted at least once:", counter)
 
+    #part 2
+    min_x = min(key[0] for key in panel_map.keys())
+    max_x = max(key[0] for key in panel_map.keys())
+    min_y = min(key[1] for key in panel_map.keys())
+    max_y = max(key[1] for key in panel_map.keys())
+    print("Xs: ", min_x, max_x)
+    print("Ys: ", min_y, max_y)
+    for j in range(min_y, max_y + 1):
+        for i in range(min_x, max_x + 1):
+            if (i,j) in panel_map.keys():
+                if panel_map[(i,j)] == 1:
+                    print('@', end = '')
+                else:
+                    print(' ', end='')
+            else:
+                print(' ', end = '')
+        print()
+
 input_to_array('input11')
 solve()
