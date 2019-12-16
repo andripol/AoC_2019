@@ -3,41 +3,46 @@ from itertools import cycle
 base_pattern = [0, 1, 0, -1]
 
 def input(fname):
-    input_string = []
-    with open(fname) as f:
-        for line in f:
-            input_string = [int(d) for d in line.strip('\n')]
-    return input_string
+    for line in open(fname):
+        return [int(d) for d in line.strip('\n')]
 
-def phase(in_str):
-    res_str = []
+def pattern_array(length):
     # for every position in the output list
-    for i in range(len(in_str)):
+    array = []
+    for i in range(length):
+        array.append([])
         pool = cycle(base_pattern)
         # idx in the newly calculated string
         idx = 0
-        sum = 0
         for item in pool:
-            if (idx == len(in_str)):
+            if (idx == length):
                 break
             flag = True
             for times in range(i+1):
-                if (idx == len(in_str)):
-                    break
+                # new string formed
+                if (idx == length): break
                 # drop the very first value of the pattern
                 if ((idx, item) == (0,base_pattern[0]) and flag):
                     flag = False
                     continue
-                sum+=in_str[idx]*item
+                array[i].append(item)
                 idx+=1
-        number = str(abs(sum))
-        res_str.append(int(number[len(number) -1]))
-    return res_str
+    return array
                 
 def solve():
-    in_str = input('input16')
-    for i in range(100):
-        in_str = phase(in_str)
+    in_str = input('input16b')
+    length = len(in_str)
+    array = pattern_array(length)
+    for phase in range(100):
+        res_str = []
+        for i in range(len(array)):
+            s = 0
+            # triangular matrix 
+            for j in range(i, length):
+                s+=array[i][j]*in_str[j]
+            number = str(abs(s))
+            res_str.append(int(number[len(number) -1]))
+        in_str = res_str
     print(in_str[:8])
 
 solve()
