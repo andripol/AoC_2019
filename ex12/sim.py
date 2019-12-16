@@ -5,11 +5,9 @@ STEPS = 1000
 
 def input(fname):
     global position, velocity
-    position = []
-    velocity = []
+    velocity = [[0,0,0], [0,0,0], [0,0,0], [0,0,0]]
     with open(fname) as f:
         position = [list(map(int,re.findall('-*\d+', line))) for line in f.readlines()]
-    velocity = [[0,0,0], [0,0,0], [0,0,0], [0,0,0]]
 
 def apply_gravity(idx1, idx2, axis):
     if position[idx1][axis] < position[idx2][axis]:
