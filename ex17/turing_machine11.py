@@ -186,9 +186,9 @@ def solve():
             break
         if (code == '\n'):
             y-=1
-            x = 0
+            x = -1
         else:
-            x+=1
+            x = x + 1
             panel_map[(x, y)] = code 
 
     #part 2
@@ -204,17 +204,10 @@ def solve():
             if (i,j) in panel_map.keys():
                 print(panel_map[(i,j)], end = '')
                 if (panel_map[(i,j)] == '#'):
-                    if ((i-1,j) in panel_map.keys() and (i+1,j) in panel_map.keys()):
-                        if (panel_map[(i-1,j)] == '#' and (panel_map[(i+1, j)] == '#')):
-                            if ((i,j-1) in panel_map.keys() and panel_map[(i, j-1)] == '#') or ((i,j+1) in panel_map.keys() and panel_map[(i, j+1)] == '#'):
-                                print("here")
-                                s+=abs(max_x - i)*abs(max_y - j)
-                                continue
-                    if ((i,j-1) in panel_map.keys() and (i,j+1) in panel_map.keys()):
-                        if (panel_map[(i,j-1)] == '#' and (panel_map[(i, j+1)] == '#')):
-                            if ((i-1,j) in panel_map.keys() and panel_map[(i-1, j)] == '#') or ((i+1,j) in panel_map.keys() and panel_map[(i+1, j)] == '#'):
-                                print('here')
-                                s+=abs(max_x - i)*abs(max_y - j)
+                    if ((i-1,j) in panel_map.keys() and (i+1,j) in panel_map.keys() and (i,j-1) in panel_map.keys()  and (i,j+1) in panel_map.keys()):
+                        if (panel_map[(i-1,j)] == '#' and panel_map[(i+1, j)] == '#' and panel_map[(i, j-1)] == '#' and panel_map[(i, j+1)] == '#'):
+                                print(abs(max_x - i), abs(max_y - j))
+                                s+=abs(i)*abs(max_y - j)
             else:
                 print(' ', end = '')
         print()
